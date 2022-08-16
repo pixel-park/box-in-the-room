@@ -1,0 +1,23 @@
+.text__wrapper{
+    margin: 0 auto;
+    width: 40%;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.viewer{
+    width: clamp(300px, 70vw, 147vh);
+    height: auto;
+    aspect-ratio: 1.5 / 1;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    position: relative;
+}
