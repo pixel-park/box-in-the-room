@@ -7,7 +7,6 @@ import room from '../objs/room.gltf';
 import envSky from '../objs/sky.gltf';
 import refl from '../img/reflaction.jpg';
 import roomDeff from '../img/map.jpg';
-import roomalph from '../img/map-alpha.jpg';
 import sky from '../img/sky.jpg'
 
 let newEnvMap, exrCubeRenderTarget;
@@ -192,17 +191,12 @@ class Viewer {
             meshes.forEach(mesh=>{
              if(mesh.name !== "button"){
                 let texture = new THREE.TextureLoader().load(roomDeff)
-                let alph = new THREE.TextureLoader().load(roomalph);
-                alph.flipY = false;
                 texture.flipY = false;
                 THREE.DefaultLoadingManager.onLoad = ()=>{
                   resolve(true)
                 };
                 mesh.material = new THREE.MeshBasicMaterial({
                             map: texture,
-                            alphaMap: alph,
-                            transparent: true,
-                            side: THREE.DoubleSide,
                           })
              } else {
               this.button = [mesh];

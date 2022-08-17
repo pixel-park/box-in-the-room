@@ -28,7 +28,7 @@ const info = [
 ]
 let index = 0;
 const windowFeatures = "width=800,height=500,left=50,top=250";
-
+let newWindow = null;
 const viewer = new Viewer({
     dom: ".viewer",
     cb: ()=>{
