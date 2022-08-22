@@ -21,3 +21,28 @@
     justify-content: center;
     position: relative;
 }
+.iframe__wrapper{
+    will-change: auto;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* top: 50px; */
+    clip-path: circle(0.0% at 50% 50%);
+    opacity: 0;
+    transition: 1s;
+}
+.frame_open{
+    clip-path: circle(100.0% at 50% 50%);
+    opacity: 1;
+}
+.frame_close{
+    clip-path: circle(0.0% at 50% 50%);
+    opacity: 0;
+}
+.close-btton{
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 5px;
+}
