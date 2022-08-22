@@ -26,20 +26,25 @@ const info = [
   This project was implemented to "Vue.js".`,
 
 ]
+
 let index = 0;
-const windowFeatures = "width=800,height=500,left=50,top=250";
 let newWindow = null;
+
 const viewer = new Viewer({
     dom: ".viewer",
     cb: ()=>{
       if(newWindow)newWindow.close();
+      const cords = viewer.viewBoxCoordinates;
+      const windowFeatures = `width=${cords.width - 100},height=${cords.height - 200},left=${cords.left + 50},top=${cords.top + 200}`;
       newWindow = window.open(adrs[index], 'popup', windowFeatures );
       genInfo.innerText = `oppening  "${adrs[index]}"...  ${(adrs.length - 1 - index)} addresses are left.`;
       linkInfo.innerText = info[index];
       index = index >= adrs.length - 1 ? 0 : index + 1;
     }
   });
-  viewer.run();
-  viewer.render()
+  
+  viewer.run()
+ 
+
 
   

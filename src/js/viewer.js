@@ -9,19 +9,19 @@ import refl from '../img/reflaction.jpg';
 import roomDeff from '../img/map.jpg';
 import sky from '../img/sky.jpg'
 
-let newEnvMap, exrCubeRenderTarget;
 
 class Viewer {
     constructor(options) {
       
       this.container = document.querySelector(options.dom);
       this.callBack = options.cb;
-  
+      this.newEnvMap = null;
+      this.newEnvMap = null;
       this.scene = new THREE.Scene();
       this.width = this.container.offsetWidth;
       this.height = this.container.offsetHeight;
       this.viewBoxCoordinates = this.container.getBoundingClientRect();
-      this.time = 0;
+      
       this.camera = new THREE.PerspectiveCamera(
         46,
         this.width / this.height,
@@ -31,11 +31,8 @@ class Viewer {
       
       this.renderer = new THREE.WebGLRenderer({
         antialias: true,
-        alpha: true,
       });
       
-      this.push = false;
-
       this.renderer.setSize(this.width, this.height);
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       
@@ -46,42 +43,19 @@ class Viewer {
     }
   
     run(){
-      return new Promise((resolve)=>{
-        this.watchResize();
-        this.loadEnvMap().then(()=>{
-          
-          this.setMaterials().then(()=>{
-            this.addRoom()
-            .then(()=>{
-            this.addSky();
-            this.watchers();
-            this.controls();
-            this.cameraPlacement();
-          })
-          })
+        this.loadEnvMap()
+        .then(this.setMaterials.bind(this))
+        .then(this.addRoom.bind(this))
+        .then(this.addSky.bind(this))
+        .then(()=>{
+          this.watchResize();
+          this.controls();
+          this.cameraPlacement();
+          this.watchers();
+          this.render();
         })
-        
-        
-      })
-      
     }
-  
-    setRender() {
-      this.renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true,
-      });
-      this.rendererPhys.shadowMap.enabled = true;
-      this.rendererPhys.shadowMap.autoUpdate = false;
-      const shadowTypes = [THREE.BasicShadowMap, THREE.PCFShadowMap, THREE.PCFSoftShadowMap, THREE.VSMShadowMap]
-      this.rendererPhys.shadowMap.type = shadowTypes[1];
-      
-      this.rendererPhys.setSize(this.width, this.height);
-      this.rendererPhys.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      
-      this.container.appendChild(this.rendererPhys.domElement);
-    }
-  
+    
     loadEnvMap() {
       return new Promise((resolve)=>{
         THREE.DefaultLoadingManager.onLoad = function () {
@@ -96,10 +70,10 @@ class Viewer {
       .load(
         refl,
         (texture)=>{
-          exrCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
+          this.exrCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
           
-          newEnvMap = exrCubeRenderTarget ? exrCubeRenderTarget.texture : null;
-          resolve(newEnvMap)
+          this.newEnvMap = this.exrCubeRenderTarget ? this.exrCubeRenderTarget.texture : null;
+          resolve(this.newEnvMap)
   
           pmremGenerator.dispose()
           texture.dispose();
@@ -126,7 +100,7 @@ class Viewer {
           refractionRatio: 0.6,
           opacity: 0.9,
           transparent: true,
-          envMap: newEnvMap,
+          envMap: this.newEnvMap,
           color: '#2596be'
         })
         this.buttonHovered = new THREE.MeshBasicMaterial({
@@ -134,7 +108,7 @@ class Viewer {
           refractionRatio: 0.6,
           opacity: 0.8,
           transparent: true,
-          envMap: newEnvMap,
+          envMap: this.newEnvMap,
           color: "rgb(50, 255, 50)"
         })
           let texture = new THREE.TextureLoader().load(roomDeff)
@@ -144,7 +118,7 @@ class Viewer {
           opacity: 1,
           // transparent: true,
           map: texture,
-          envMap: newEnvMap,
+          envMap: this.newEnvMap,
           color: 'white'
         })
         resolve()
