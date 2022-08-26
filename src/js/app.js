@@ -3,9 +3,11 @@ import { Viewer } from './viewer.js';
 const genInfo = document.getElementById('general-info');
 const linkInfo = document.getElementById('discripe');
 
-const adrs = ['https://pixel-park.github.io/', 'https://github.com/pixel-park/box-in-the-room', 'https://plnup.com/configurator/', 'https://angry-goldberg-208d05.netlify.app/'];
+const adrs = ['https://plnup.com/room-3/', 'https://pixel-park.github.io/', 'https://github.com/pixel-park/box-in-the-room', 'https://plnup.com/configurator/', 'https://angry-goldberg-208d05.netlify.app/'];
 
 const info = [
+  `Almost the same but here pressing the button opens a 3D screen inside the room instead of a window within the same window`,
+  
   `My online cv :)`,
   
   `This is the GitHub repository for this particular task`,
